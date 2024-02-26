@@ -25,8 +25,30 @@ class LinkedList : public ListInterface<ItemType>{
 public:
 	LinkedList() : headPtr(nullptr), itemCount(0) {}
 
-	LinkedList(const LinkedList<ItemType>& aList) {
-		cout << "implement me!" << endl; //remove this and add the correct code
+	LinkedList(const LinkedList<ItemType>& aList) : headPtr(nullptr), itemCount(0) {
+		Node<ItemType>* orgPtr = aList.headPtr;
+		Node<ItemType>* curPtr = nullptr;
+		if (orgPtr == nullptr)
+		{
+			headPtr = nullptr;
+			itemCount = 0;
+		}
+		else
+		{
+			headPtr = new Node<ItemType>(orgPtr->getItem());
+			curPtr = headPtr;
+			orgPtr = orgPtr->getNext();
+		}
+
+		while (orgPtr != nullptr)
+		{
+			ItemType orgEntry = orgPtr->getItem();
+			Node<ItemType>* newPtr = new Node<ItemType>(orgEntry);
+			curPtr->setNext(newPtr);
+			curPtr = curPtr->getNext();
+			orgPtr = orgPtr->getNext();
+		}
+		itemCount = aList.itemCount;
 	}
 
 	bool isEmpty() const {
