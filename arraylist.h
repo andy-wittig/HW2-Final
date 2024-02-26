@@ -5,16 +5,20 @@
 #include "list.h"
 
 template<class ItemType>
-class ArrayList : public ListInterface<ItemType>{
-    static const int DEFAULT_CAPACITY = 100;
-    ItemType items[DEFAULT_CAPACITY + 1]; //(ignore item[0])
-    int itemCount;
-    int maxCount;
+class ArrayList : public ListInterface<ItemType> {
+	static const int DEFAULT_CAPACITY = 100;
+	ItemType items[DEFAULT_CAPACITY + 1]; //(ignore item[0])
+	int itemCount;
+	int maxCount;
 public:
 	ArrayList() : maxCount(DEFAULT_CAPACITY), itemCount(0) {}
 
-	ArrayList(const ArrayList<ItemType>& aList) {
-		cout << "implement me!" << endl; //remove this and add the correct code
+	ArrayList(const ArrayList<ItemType>& aList) : maxCount(aList.DEFAULT_CAPACITY), itemCount(aList.itemCount)
+	{ //Copy constructor
+		for (int i = 1; i <= itemCount; i++)
+		{
+			items[i] = aList.items[i];
+		}
 	}
 
 	bool isEmpty() const {
@@ -70,15 +74,16 @@ public:
 
 	ItemType replace(int position, const ItemType& newEntry) {
 		bool ableToReplace = (position >= 1) && (position <= itemCount);
+		ItemType temp;
 		if (ableToReplace)
 		{
+			ItemType temp = items[position];
 			items[position] = newEntry;
 		}
 		throw "Index out of range";
-		ItemType temp;
-		return temp; //SHOULD RETURN OLD ENTRY
+		return temp;
 	}
-	
+
 	~ArrayList() {}
 };
 #endif
