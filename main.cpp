@@ -1,5 +1,5 @@
-//Author: Erin Keith
-//Date: 6/5/23
+//Author: Erin Keith and edited by Andrew Wittig
+//Date: 2/25/20204
 //Purpose: HW 2
 
 #include <iostream>
@@ -16,10 +16,12 @@ void replaceTask(ListInterface<string>&);
 void removeTask(ListInterface<string>&);
 void completeTodoTask(LinkedList<string>&, ArrayList<string>&);
 void addTodoTask(LinkedList<string>&);
+void copyTodoList(LinkedList<string>&);
+void copyDoneList(ArrayList<string>&);
 
 using namespace std;
 
-int main(void){
+int main(void) {
     int menuChoice;
     LinkedList<string> todoList;
     ArrayList<string> doneList;
@@ -27,53 +29,59 @@ int main(void){
     do {
         menuChoice = getMenuChoice();
 
-        switch(menuChoice){
-            case 1:
-                addTodoTask(todoList);
-                break;
-            case 2:
-                completeTodoTask(todoList, doneList);
-                break;
-            case 3:
-                cout << endl << "To Do: " << endl;
-                displayList(todoList);
-                break;
-            case 4:
-                cout << endl << "Completed: " << endl;
-                displayList(doneList);
-                break;
-            case 5:
-                replaceTask(todoList);
-                break;
-            case 6:
-                replaceTask(doneList);
-                break;
-            case 7:
-                removeTask(todoList);
-                break;
-            case 8:
-                removeTask(doneList);
-                break;
-            case 9:
-                cout << endl << "Cleared!" << endl;
-                clearList(todoList);
-                break;
-            case 10:
-                cout << endl << "Cleared!" << endl;
-                clearList(doneList);
-                break;
-            case 0:
-                break;
-            default:
-                cout << endl << "Invalid option!" << endl;
-                break;
+        switch (menuChoice) {
+        case 1:
+            addTodoTask(todoList);
+            break;
+        case 2:
+            completeTodoTask(todoList, doneList);
+            break;
+        case 3:
+            cout << endl << "To Do: " << endl;
+            displayList(todoList);
+            break;
+        case 4:
+            cout << endl << "Completed: " << endl;
+            displayList(doneList);
+            break;
+        case 5:
+            replaceTask(todoList);
+            break;
+        case 6:
+            replaceTask(doneList);
+            break;
+        case 7:
+            removeTask(todoList);
+            break;
+        case 8:
+            removeTask(doneList);
+            break;
+        case 9:
+            cout << endl << "Cleared!" << endl;
+            clearList(todoList);
+            break;
+        case 10:
+            cout << endl << "Cleared!" << endl;
+            clearList(doneList);
+            break;
+        case 11:
+            copyTodoList(todoList);
+            break;
+        case 12:
+            copyDoneList(doneList);
+            break;
+        case 0:
+            break;
+        default:
+            cout << endl << "Invalid option!" << endl;
+            break;
         }
-    }while(menuChoice != 0);
+    } while (menuChoice != 0);
 
     return 0;
 }
 
-int getMenuChoice(){
+int getMenuChoice() {
     int userChoice;
 
     cout << endl << "TODO APP" << endl;
@@ -87,19 +95,21 @@ int getMenuChoice(){
     cout << "8. Remove DONE task" << endl;
     cout << "9. Clear TODO list" << endl;
     cout << "10. Clear DONE list" << endl;
+    cout << "11. Copy TODO list" << endl;
+    cout << "12. Copy DONE list" << endl;
     cout << "0. Exit " << endl;
 
     cin >> userChoice;
     return userChoice;
 }
 
-void displayList(ListInterface<string>& list){
-    if(list.isEmpty()){
+void displayList(ListInterface<string>& list) {
+    if (list.isEmpty()) {
         cout << "No tasks currently!" << endl;
         return;
     }
 
-    for(int pos = 1; pos <= list.getLength(); pos++){
+    for (int pos = 1; pos <= list.getLength(); pos++) {
         cout << pos << ": " << list.getEntry(pos) << endl;
     }
 }
@@ -113,28 +123,42 @@ void clearList(ListInterface<string>& list) {
     list.clear();
 }
 
-void completeTodoTask(LinkedList<string>& todo, ArrayList<string>& done){
+void copyTodoList(LinkedList<string>& list)
+{
+    LinkedList<string> copyLinkedList = list;
+    cout << "Copied TODO List:" << endl;
+    displayList(copyLinkedList);
+}
+
+void copyDoneList(ArrayList<string>& list)
+{
+    ArrayList<string> copyArrayList = list;
+    cout << "Copied DONE List:" << endl;
+    displayList(copyArrayList);
+}
+
+void completeTodoTask(LinkedList<string>& todo, ArrayList<string>& done) {
     int pos;
     string completedTask;
 
     cout << endl << "To Do: " << endl;
     displayList(todo);
 
-    if(!todo.isEmpty()){
+    if (!todo.isEmpty()) {
         cout << "Please select which task you've completed: " << endl;
         cin >> pos;
 
-        try{
+        try {
             completedTask = todo.getEntry(pos);
         }
-        catch(const char* e){
+        catch (const char* e) {
             cout << endl << "Could not complete task." << endl;
             return;
         }
 
         todo.remove(pos);
 
-        if(todo.isEmpty()){
+        if (todo.isEmpty()) {
             cout << endl << "GREAT JOB! You finished all your tasks :D";
         }
 
@@ -144,7 +168,7 @@ void completeTodoTask(LinkedList<string>& todo, ArrayList<string>& done){
     }
 }
 
-void addTodoTask(LinkedList<string>& todo){
+void addTodoTask(LinkedList<string>& todo) {
     int priority;
     string newTask;
 
@@ -153,7 +177,7 @@ void addTodoTask(LinkedList<string>& todo){
     cout << endl << "What is the priority of your new task?" << endl;
     cin >> priority;
 
-    while(priority < 1 || priority > todo.getLength() + 1){
+    while (priority < 1 || priority > todo.getLength() + 1) {
         cout << "Choose a priority 1 through " << todo.getLength() + 1 << endl;
         cin >> priority;
     }
