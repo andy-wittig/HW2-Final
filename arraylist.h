@@ -74,14 +74,13 @@ public:
 
 	ItemType replace(int position, const ItemType& newEntry) {
 		bool ableToReplace = (position >= 1) && (position <= itemCount);
-		ItemType temp;
 		if (ableToReplace)
 		{
 			ItemType temp = items[position];
 			items[position] = newEntry;
+			return temp;
 		}
-		throw "Index out of range";
-		return temp;
+		throw "Item not found";
 	}
 
 	~ArrayList() {}
